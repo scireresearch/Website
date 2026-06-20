@@ -145,7 +145,9 @@ header {
     display: flex;
     flex-direction: column;
     line-height: 1.1;
-    min-width: 0; /* Allows flex shrinking */
+    /* This ensures the text takes up full width */
+    min-width: 0;
+    flex: 1;
 }
 
 .logo-text .main {
@@ -153,7 +155,11 @@ header {
     font-weight: 800;
     color: #1e3c72;
     letter-spacing: -0.5px;
-    white-space: nowrap; /* Prevents breaking */
+    /* Remove white-space: nowrap to allow wrapping if needed */
+    white-space: nowrap;
+    /* Stretch to fill width */
+    width: 100%;
+    display: block;
 }
 
 .logo-text .main span {
@@ -166,17 +172,20 @@ header {
     color: #4a5b6e;
     letter-spacing: 0.5px;
     text-transform: uppercase;
-    white-space: nowrap; /* Keeps tagline on one line */
+    white-space: nowrap;
+    /* Match width of main title */
+    width: 100%;
+    display: block;
 }
 
 /* ===== RESPONSIVE - Adjust font sizes ===== */
 @media (max-width: 768px) {
     .logo-text .main {
-        font-size: 1.2rem; /* Smaller on mobile */
+        font-size: 1.2rem;
     }
     
     .logo-text .tagline {
-        font-size: 0.55rem; /* Smaller tagline on mobile */
+        font-size: 0.55rem;
     }
     
     .logo svg {
@@ -186,7 +195,7 @@ header {
 
 @media (max-width: 480px) {
     .logo-text .main {
-        font-size: 1rem; /* Even smaller on very small screens */
+        font-size: 1rem;
     }
     
     .logo-text .tagline {
