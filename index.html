@@ -143,92 +143,160 @@
             margin: 0 auto 50px;
         }
 
-        /* ===== HEADER ===== */
-        header {
-            background: #fff;
-            padding: 16px 0;
-            border-bottom: 1px solid #eaeef3;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-        }
+      /* ===== HEADER - TRANSPARENT OVERLAY ===== */
+header {
+    background: transparent;
+    padding: 16px 0;
+    position: absolute; /* Changed from sticky to absolute */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    transition: background 0.3s ease;
+}
 
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
+/* When scrolling, add a solid background */
+header.scrolled {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #eaeef3;
+    position: fixed; /* Becomes fixed on scroll */
+}
 
-        /* ===== LOGO ===== */
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
 
-        .logo svg {
-            height: 45px;
-            width: auto;
-            flex-shrink: 0;
-        }
+/* ===== LOGO ===== */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
 
-        .logo-text {
-            display: flex;
-            flex-direction: column;
-            line-height: 1.1;
-            min-width: 0;
-            flex: 1;
-        }
+.logo svg {
+    height: 40px;
+    width: auto;
+    flex-shrink: 0;
+}
 
-        .logo-text .main {
-            font-size: 2rem;
-            font-weight: 800;
-            color: #1e3c72;
-            letter-spacing: -0.5px;
-            white-space: nowrap;
-            width: 100%;
-            display: block;
-        }
+/* On transparent header, logo text is white */
+.logo-text .main {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.5px;
+    white-space: nowrap;
+}
+.logo-text .main span {
+    color: #7aafd4;
+}
+.logo-text .tagline {
+    font-size: 0.6rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
 
-        .logo-text .main span {
-            color: #4a7ab5;
-        }
+/* When scrolled, revert to dark text */
+header.scrolled .logo-text .main {
+    color: #1e3c72;
+}
+header.scrolled .logo-text .main span {
+    color: #4a7ab5;
+}
+header.scrolled .logo-text .tagline {
+    color: #4a5b6e;
+}
 
-        .logo-text .tagline {
-            font-size: 0.7rem;
-            font-weight: 400;
-            color: #4a5b6e;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            white-space: nowrap;
-            width: 100%;
-            display: block;
-        }
+/* ===== DESKTOP NAVIGATION ===== */
+.desktop-nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
 
-        @media (max-width: 768px) {
-            .logo-text .main {
-                font-size: 1.2rem;
-            }
-            .logo-text .tagline {
-                font-size: 0.55rem;
-            }
-            .logo svg {
-                height: 35px;
-            }
-        }
+.desktop-nav a {
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.95rem;
+    transition: color 0.2s;
+    white-space: nowrap;
+}
+.desktop-nav a:hover {
+    color: #fff;
+}
 
-        @media (max-width: 480px) {
-            .logo-text .main {
-                font-size: 1rem;
-            }
-            .logo-text .tagline {
-                font-size: 0.5rem;
-            }
-        }
+/* When scrolled, nav links are dark */
+header.scrolled .desktop-nav a {
+    color: #2c3e50;
+}
+header.scrolled .desktop-nav a:hover {
+    color: #1e3c72;
+}
 
+/* Contact button - white outline on transparent */
+.desktop-nav .btn-small {
+    background: transparent;
+    color: #fff;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+}
+.desktop-nav .btn-small:hover {
+    background: #fff;
+    color: #1e3c72;
+    border-color: #fff;
+}
+
+/* When scrolled, contact button is normal */
+header.scrolled .desktop-nav .btn-small {
+    color: #1e3c72;
+    border: 2px solid #1e3c72;
+}
+header.scrolled .desktop-nav .btn-small:hover {
+    background: #1e3c72;
+    color: #fff;
+}
+
+/* ===== HAMBURGER - White on transparent ===== */
+.hamburger .bar {
+    background: #fff;
+}
+header.scrolled .hamburger .bar {
+    background: #1e3c72;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .desktop-nav {
+        display: none;
+    }
+    .hamburger {
+        display: flex;
+    }
+    .logo-text .main {
+        font-size: 1.2rem;
+    }
+    .logo-text .tagline {
+        font-size: 0.5rem;
+    }
+    .logo svg {
+        height: 35px;
+    }
+}
+
+@media (min-width: 769px) {
+    .hamburger {
+        display: none;
+    }
+}
         /* ===== DESKTOP NAVIGATION ===== */
         .desktop-nav {
             display: flex;
@@ -1877,6 +1945,23 @@
 
     <!-- ===== SCRIPTS ===== -->
     <script>
+// ===== TRANSPARENT HEADER ON SCROLL =====
+document.addEventListener('DOMContentLoaded', function() {
+    const header = document.getElementById('mainHeader');
+    
+    function handleScroll() {
+        if (window.scrollY > 50) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    }
+    
+    window.addEventListener('scroll', handleScroll);
+    // Initial check
+    handleScroll();
+});
+        
         // ===== STATS ANIMATION =====
         document.addEventListener('DOMContentLoaded', function() {
             const stats = document.querySelectorAll('.stat-number');
