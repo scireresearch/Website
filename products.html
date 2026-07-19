@@ -657,6 +657,7 @@
             padding: 40px 0;
             border-top: 1px solid #d0d7de;
             border-bottom: 1px solid #d0d7de;
+            scroll-margin-top: 100px;
         }
 
         .scorecard-anchor .intro {
@@ -1032,6 +1033,33 @@
             margin-top: 4px;
         }
 
+        /* ===== EARLY EXIT (No AI) ===== */
+        .early-exit {
+            display: none;
+            background: #f8fafc;
+            padding: 30px;
+            border-radius: 12px;
+            border: 2px solid #f59e0b;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .early-exit.visible {
+            display: block;
+        }
+
+        .early-exit h4 {
+            color: #0b1e33;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+
+        .early-exit p {
+            color: #4a5b6e;
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+        }
+
         /* ===== CONTACT ===== */
         .contact-grid {
             display: grid;
@@ -1272,33 +1300,6 @@
                 transform: rotate(360deg);
             }
         }
-
-        /* ===== EARLY EXIT (No AI) ===== */
-        .early-exit {
-            display: none;
-            background: #f8fafc;
-            padding: 30px;
-            border-radius: 12px;
-            border: 2px solid #f59e0b;
-            text-align: center;
-            margin-bottom: 16px;
-        }
-
-        .early-exit.visible {
-            display: block;
-        }
-
-        .early-exit h4 {
-            color: #0b1e33;
-            font-size: 1.2rem;
-            margin-bottom: 8px;
-        }
-
-        .early-exit p {
-            color: #4a5b6e;
-            font-size: 0.95rem;
-            margin-bottom: 16px;
-        }
     </style>
 </head>
 
@@ -1353,7 +1354,7 @@
     </div>
 
     <!-- ===== BRAND INTEGRATION HERO ===== -->
-    <section class="innovations-hero">
+    <section class="innovations-hero" id="hero-section">
         <div class="container">
             <span class="badge">Scire Innovations</span>
             <h1>Sovereign Infrastructure &amp; Compliance</h1>
@@ -1370,8 +1371,8 @@
 
             <div class="flagship-layout">
                 <div class="flagship-content">
-                    <span class="product-badge">🇰🇪 Flagship Product</span>
-                    <h2>Sheria AI<span>™</span></h2>
+                    <span class="product-badge">Flagship Product</span>
+                    <h2>Sheria AI</h2>
                     <p class="subtitle">The Sovereign AI Compliance Operating System</p>
                     <p class="desc">
                         Automate end-to-end alignment with Kenya's <strong>Artificial Intelligence Bill, 2026</strong>.
@@ -1380,8 +1381,8 @@
                     </p>
                     <div class="cta-row">
                         <a href="#diagnostic" class="btn">Run Compliance Diagnostic</a>
-                        <a href="mailto:infoscireresearch@gmail.com?subject=Sheria AI Enterprise Briefing"
-                            class="btn btn-outline-dark">Request Architecture Briefing</a>
+                        <a href="#contact" class="btn">Request Architecture Briefing</a>
+
                     </div>
                 </div>
 
@@ -1389,11 +1390,11 @@
                 <div class="moat-box">
                     <h4>The Sovereign Moat</h4>
                     <ul>
-                        <li>🛡️ <strong>100% Data Localization:</strong> Compliance data and model registries never leave
+                        <li><strong>100% Data Localization:</strong> Compliance data and model registries never leave
                             Kenyan borders.</li>
-                        <li>📊 <strong>Localized Bias Audits:</strong> Drift tracking calibrated for domestic
+                        <li><strong>Localized Bias Audits:</strong> Drift tracking calibrated for domestic
                             demographic groups.</li>
-                        <li>📜 <strong>Verifiable Ledgers:</strong> Machine-verifiable conformity logs ready for
+                        <li><strong>Verifiable Ledgers:</strong> Machine-verifiable conformity logs ready for
                             corporate boards.</li>
                     </ul>
                 </div>
@@ -1432,8 +1433,8 @@
     <!-- ===== DIAGNOSTIC ANCHOR + SCORECARD ===== -->
     <section class="scorecard-anchor" id="diagnostic">
         <div class="container">
-            <div class="intro">
-                <h3>📋 Evaluate Your Model Stability</h3>
+            <div class="intro" id="diagnostic-intro">
+                <h3>Evaluate Your Model Stability</h3>
                 <p>
                     Is your software ecosystem prepared for the AI Commissioner's parameters? Use our interactive
                     checklist below to isolate your baseline vulnerability profile.
@@ -1709,9 +1710,8 @@
                             </div>
 
                             <div class="action-row">
-                                <a href="#contact" class="btn">📞 Request Enterprise Briefing</a>
-                                <a href="mailto:infoscireresearch@gmail.com?subject=Sheria AI Report Follow-up"
-                                    class="btn btn-outline-dark">📧 Email Our Team</a>
+                                <a href="#contact" class="btn">Request Enterprise Briefing</a>
+                                <a href="#contact" class="btn">Email Our Team</a>
                             </div>
 
                             <button onclick="resetScorecard()" class="btn btn-secondary"
@@ -1764,7 +1764,7 @@
                     <div class="detail">
 
                         <div><strong>Email</strong><br /><a
-                                href="mailto:infoscireresearch@gmail.com">infoscireresearch@gmail.com</a>
+                                href="mailto:info@scireresearch.com">info@scireresearch.com</a>
                         </div>
                     </div>
                     <div class="detail">
@@ -1825,7 +1825,7 @@
             <a href="#contact" class="btn">Get in Touch</a>
             <div class="contact-info">
                 <span>+254 704 813110</span>
-                <span><a href="mailto:infoscireresearch@gmail.com">infoscireresearch@gmail.com</a></span>
+                <span><a href="mailto:info@scireresearch.com">info@scireresearch.com</a></span>
                 <span>Nairobi, Kenya</span>
             </div>
         </div>
@@ -1955,6 +1955,7 @@
             const resultsDashboard = document.getElementById('resultsDashboard');
             const navControls = document.getElementById('navControls');
             const earlyExit = document.getElementById('earlyExit');
+            const diagnosticIntro = document.getElementById('diagnostic-intro');
 
             let currentStep = 0;
             const totalQuestions = cards.length;
@@ -1962,13 +1963,17 @@
             let collectedAnswers = {};
             let storedResult = null;
 
-            // ===== SHOW EARLY EXIT =====
+            // ===== SHOW EARLY EXIT - STAY ON PAGE =====
             function showEarlyExit() {
                 isEarlyExit = true;
                 document.getElementById('progressContainer').style.display = 'none';
                 form.style.display = 'none';
                 earlyExit.classList.add('visible');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                // Scroll to the early exit message (stay in diagnostic section)
+                setTimeout(function() {
+                    earlyExit.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 100);
             }
 
             // ===== CHECK IF CURRENT QUESTION IS ANSWERED =====
@@ -2205,7 +2210,7 @@
                 ).join('');
             }
 
-            // ===== RESET SCORECARD =====
+            // ===== RESET SCORECARD - SCROLL TO DIAGNOSTIC INTRO =====
             window.resetScorecard = function() {
                 isEarlyExit = false;
                 collectedAnswers = {};
@@ -2221,10 +2226,28 @@
                 document.getElementById('diagEmail').value = '';
                 document.getElementById('successMessage').classList.remove('show');
                 const captureDiv = document.getElementById('diagnostic-lead-capture');
-                captureDiv.querySelector('.capture-row').style.display = 'flex';
+                const captureRow = captureDiv.querySelector('.capture-row');
+                if (captureRow) {
+                    captureRow.style.display = 'flex';
+                    const submitBtn = captureRow.querySelector('#btnSubmitDiagnostic');
+                    if (submitBtn) {
+                        submitBtn.style.display = 'block';
+                        submitBtn.innerText = 'Secure & Submit Audit Profile';
+                        submitBtn.disabled = false;
+                    }
+                    const inputs = captureRow.querySelectorAll('input');
+                    inputs.forEach(el => el.style.display = 'block');
+                }
                 currentStep = 0;
                 updateWizardUI();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                // Scroll to the diagnostic intro (Evaluate Your Model Stability)
+                setTimeout(function() {
+                    const diagnosticIntro = document.getElementById('diagnostic-intro');
+                    if (diagnosticIntro) {
+                        diagnosticIntro.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }, 200);
             };
 
             // ============================================================ -->
