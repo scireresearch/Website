@@ -1381,8 +1381,8 @@
 
             <div class="flagship-layout">
                 <div class="flagship-content">
-                    <span class="product-badge">🇰🇪 Flagship Product</span>
-                    <h2>Sheria AI<span>™</span></h2>
+                    <span class="product-badge">Flagship Product</span>
+                    <h2>Sheria AI</h2>
                     <p class="subtitle">The Sovereign AI Compliance Operating System</p>
                     <p class="desc">
                         Automate end-to-end alignment with Kenya's <strong>Artificial Intelligence Bill, 2026</strong>.
@@ -1757,24 +1757,6 @@
 
                     </form>
 
-                    <!-- ===== HIDDEN FORM (SAME AS CONTACT FORM) ===== -->
-                    <form id="hiddenForm" class="hidden-form" action="https://formspree.io/f/xreonyro" method="POST">
-                        <input type="text" id="hf_name" name="name" />
-                        <input type="email" id="hf_email" name="email" />
-                        <input type="text" id="hf_phone" name="phone" />
-                        <input type="text" id="hf_company" name="company" />
-                        <input type="text" id="hf_subject" name="_subject" />
-                        <input type="text" id="hf_score" name="score" />
-                        <input type="text" id="hf_tier" name="tier" />
-                        <input type="text" id="hf_label" name="label" />
-                        <input type="text" id="hf_shadowAi" name="shadowAi" />
-                        <input type="text" id="hf_gaps" name="gaps" />
-                        <input type="text" id="hf_actions" name="actions" />
-                        <input type="text" id="hf_answers" name="answers" />
-                        <input type="text" id="hf_timestamp" name="timestamp" />
-                        <input type="hidden" name="_gotcha" style="display:none" />
-                    </form>
-
                     <!-- Results Dashboard -->
                     <div class="results-dashboard" id="resultsDashboard">
                         <div id="resultBadge" class="result-badge">
@@ -1988,22 +1970,6 @@
             const resultsDashboard = document.getElementById('resultsDashboard');
             const submitBtn = document.getElementById('submitDiagnosticBtn');
             const statusDiv = document.getElementById('submissionStatus');
-
-            // Hidden form elements
-            const hf_name = document.getElementById('hf_name');
-            const hf_email = document.getElementById('hf_email');
-            const hf_phone = document.getElementById('hf_phone');
-            const hf_company = document.getElementById('hf_company');
-            const hf_subject = document.getElementById('hf_subject');
-            const hf_score = document.getElementById('hf_score');
-            const hf_tier = document.getElementById('hf_tier');
-            const hf_label = document.getElementById('hf_label');
-            const hf_shadowAi = document.getElementById('hf_shadowAi');
-            const hf_gaps = document.getElementById('hf_gaps');
-            const hf_actions = document.getElementById('hf_actions');
-            const hf_answers = document.getElementById('hf_answers');
-            const hf_timestamp = document.getElementById('hf_timestamp');
-            const hiddenForm = document.getElementById('hiddenForm');
 
             let currentStep = 0;
             const totalSteps = cards.length;
@@ -2315,7 +2281,7 @@
                 };
             }
 
-            // ===== SUBMIT DIAGNOSTIC (Using hidden form - same as contact form) =====
+            // ===== SUBMIT DIAGNOSTIC (Using fetch with FormData - works with Formspree) =====
             function submitDiagnostic() {
                 const name = document.getElementById('leadName').value.trim();
                 const email = document.getElementById('leadEmail').value.trim();
@@ -2339,43 +2305,81 @@
                 const answers = getUserAnswers();
                 const result = calculateResults(answers);
 
-                // Fill hidden form fields (same as contact form)
-                hf_name.value = name;
-                hf_email.value = email;
-                hf_phone.value = phone || 'Not provided';
-                hf_company.value = company;
-                hf_subject.value = 'Sheria AI Diagnostic Results - ' + company;
-                hf_score.value = result.score;
-                hf_tier.value = result.tier;
-                hf_label.value = result.label;
-                hf_shadowAi.value = result.shadowAiInsights.join(' | ');
-                hf_gaps.value = result.gaps.join(' | ');
-                hf_actions.value = result.actions.join(' | ');
-                hf_answers.value = JSON.stringify(answers);
-                hf_timestamp.value = new Date().toISOString();
+                // Build FormData
+                const formData = new FormData();
+                formData.append('name', name);
+                formData.append('email', email);
+                formData.append('phone', phone || 'Not provided');
+                formData.append('company', company);
+                formData.append('_subject', 'Sheria AI Diagnostic Results - ' + company);
+                formData.append('score', result.score);
+                formData.append('tier', result.tier);
+                formData.append('label', result.label);
+                formData.append('shadowAi', result.shadowAiInsights.join(' | '));
+                formData.append('gaps', result.gaps.join(' | '));
+                formData.append('actions', result.actions.join(' | '));
+                formData.append('answers', JSON.stringify(answers));
+                formData.append('timestamp', new Date().toISOString());
 
+                // Show loading state
                 statusDiv.className = 'submission-status loading';
                 statusDiv.innerHTML = '<span class="spinner"></span> Submitting your results...';
                 statusDiv.style.display = 'block';
                 submitBtn.disabled = true;
 
-                // Submit the hidden form (same as contact form submission)
-                hiddenForm.submit();
-
-                // Show success after a short delay (the form submits to Formspree)
-                setTimeout(function () {
-                    statusDiv.className = 'submission-status success';
-                    statusDiv.textContent = '✅ Report sent! We\'ll get back to you within 24 hours.';
-                    setTimeout(() => {
-                        statusDiv.style.display = 'none';
-                        showResultsDashboard(result);
-                    }, 800);
-                }, 1500);
-
-                // Re-enable button after 5 seconds (in case of form submission issues)
-                setTimeout(function () {
-                    submitBtn.disabled = false;
-                }, 5000);
+                // Send to Formspree using fetch with FormData (works with Formspree)
+                fetch('https://formspree.io/f/xreonyro', {
+                    method: 'POST',
+                    body: formData,
+                    // No Content-Type header - browser sets it with boundary for FormData
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            statusDiv.className = 'submission-status success';
+                            statusDiv.textContent = '✅ Report sent! We\'ll get back to you within 24 hours.';
+                            setTimeout(() => {
+                                statusDiv.style.display = 'none';
+                                showResultsDashboard(result);
+                            }, 800);
+                        } else {
+                            throw new Error('Submission failed');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Submission error:', error);
+                        // Fallback: mailto
+                        const subject = encodeURIComponent('Sheria AI Diagnostic Results - ' + company);
+                        const body = encodeURIComponent(
+                            'New Sheria AI Diagnostic Submission\n' +
+                            '====================================\n\n' +
+                            'Contact Details:\n' +
+                            '-----------------\n' +
+                            'Name: ' + name + '\n' +
+                            'Email: ' + email + '\n' +
+                            'Phone: ' + (phone || 'Not provided') + '\n' +
+                            'Organization: ' + company + '\n\n' +
+                            'Score: ' + result.score + '%\n' +
+                            'Tier: ' + result.tier + '\n' +
+                            'Label: ' + result.label + '\n\n' +
+                            'Shadow AI: ' + result.shadowAiInsights.join('\n') + '\n\n' +
+                            'Gaps: ' + result.gaps.join('\n') + '\n\n' +
+                            'Actions: ' + result.actions.join('\n') + '\n\n' +
+                            'Full Answers: ' + JSON.stringify(answers, null, 2) + '\n\n' +
+                            'Timestamp: ' + new Date().toISOString()
+                        );
+                        window.open('mailto:infoscireresearch@gmail.com?subject=' + subject + '&body=' + body, '_blank');
+                        statusDiv.className = 'submission-status success';
+                        statusDiv.textContent = '✅ Please send the email that just opened.';
+                        setTimeout(() => {
+                            statusDiv.style.display = 'none';
+                            showResultsDashboard(result);
+                        }, 1000);
+                    })
+                    .finally(() => {
+                        setTimeout(() => {
+                            submitBtn.disabled = false;
+                        }, 3000);
+                    });
             }
 
             // ===== SHOW RESULTS DASHBOARD =====
